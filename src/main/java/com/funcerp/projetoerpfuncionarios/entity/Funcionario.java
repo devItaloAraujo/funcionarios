@@ -33,9 +33,9 @@ public class Funcionario extends Pessoa {
    * @param salario        Salário do funcionário.
    * @param funcao         Função do funcionário.
    */
-  public Funcionario(String nome, LocalDate dataNascimento, BigDecimal salario, String funcao) {
+  public Funcionario(String nome, String dataNascimento, String salario, String funcao) {
     super(nome, dataNascimento);
-    this.salario = salario;
+    this.salario = new BigDecimal(salario);
     this.funcao = funcao;
   }
 
