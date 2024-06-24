@@ -4,7 +4,6 @@ import com.funcerp.projetoerpfuncionarios.controller.dto.FuncionarioDto;
 import com.funcerp.projetoerpfuncionarios.entity.Funcionario;
 import com.funcerp.projetoerpfuncionarios.repository.FuncionarioRepository;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +31,7 @@ public class FuncionarioService {
   public Funcionario saveFuncionario(Funcionario funcionario) {
     return funcionarioRepository.save(funcionario);
   }
-  
+
   /**
    * Deleta um funcionário por nome.
    */
