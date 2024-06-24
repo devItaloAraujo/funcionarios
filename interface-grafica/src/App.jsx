@@ -1,33 +1,85 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import axios from 'axios'
+
+const URL = 'http://localhost:8080/';
+
+const defaultState = {
+  isDisabled: true,
+  labelText: 'Informação adicional:',
+  endOfUrl: '',
+  reponseData: '...',
+  inputValue: '',
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [state, setState] = useState(defaultState)
 
+  const handleVerTodosClick = async () => {
+    try {
+      const response = await axios.get(URL)
+      setState({ ...state, isDisabled: true, reponseData: JSON.stringify(response.data), labelText: 'Informação adicional:'})
+    } catch (error) {
+      setState({ ...state, isDisabled: true, reponseData: error.message, labelText: 'Informação adicional:'})
+    }
+  }
+
+  const handleDeleteClick = async () => {        
+      setState({ ...state, isDisabled: false, labelText: 'Informe o nome do funcionário a ser excluído:', endOfUrl: 'delete/' })
+  }
+
+  const handleConfirm = async () => {
+    try {
+      await axios.delete(URL+state.endOfUrl+state.inputValue)
+      setState({ ...state, isDisabled: true, reponseData: 'Funcionário excluído com sucesso!' })
+    } catch (error) {
+      setState({ ...state, isDisabled: true, reponseData: error.message })
+    }
+  }
+
+  const handleInputChange = (event) => {
+    setState({...state, inputValue: event.target.value})
+  }
+    
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <h1>ERP Funcionários</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button onClick={handleVerTodosClick}>
+          Ver todos
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <button onClick={handleDeleteClick}>
+          Deletar
+        </button>
+        <button>
+          Aumentar salário(10%)
+        </button>
+        <button>
+          Agrupar por função
+        </button>
+        <button>
+          Aniversários
+        </button>
+        <button>
+          Mostrar mais velho
+        </button>
+        <button>
+          Ver todos em ordem alfabética
+        </button>
+        <button>
+          Total dos salários
+        </button>
+        <button>
+          Salários Mínimos
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <label htmlFor="myInput">{state.labelText}
+        <input id="myInput" type="text" disabled={state.isDisabled} onChange={handleInputChange}/>
+        <button disabled={state.isDisabled} onClick={handleConfirm}>Confirmar</button>
+      </label>      
+      <div className="exibicao">
+        {state.reponseData}    
+      </div>
     </>
   )
 }
