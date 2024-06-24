@@ -1,5 +1,6 @@
 package com.funcerp.projetoerpfuncionarios.service;
 
+import com.funcerp.projetoerpfuncionarios.controller.dto.FuncionarioDto;
 import com.funcerp.projetoerpfuncionarios.entity.Funcionario;
 import com.funcerp.projetoerpfuncionarios.repository.FuncionarioRepository;
 import java.math.BigDecimal;
@@ -7,6 +8,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,19 +32,13 @@ public class FuncionarioService {
   public Funcionario saveFuncionario(Funcionario funcionario) {
     return funcionarioRepository.save(funcionario);
   }
-
-  /**
-   * Deleta funcionário por id.
-   */
-  public void deleteFuncionarioById(Long id) {
-    funcionarioRepository.deleteById(id);
-  }
-
+  
   /**
    * Deleta um funcionário por nome.
    */
   public void deleteFuncionarioByNome(String nome) {
-    funcionarioRepository.deleteByNome(nome);
+    Optional<Funcionario> funcionario = funcionarioRepository.findByNome(nome);
+    funcionario.ifPresent(funcionarioRepository::delete);
   }
 
   /**
@@ -72,10 +68,10 @@ public class FuncionarioService {
    * Agrupa os funcionários por função em um MAP, sendo a chave a “função” e o valor a “lista de
    * funcionários”.
    */
-  public Map<String, List<Funcionario>> groupFuncionariosByFuncao() {
+  public Map<String, List<FuncionarioDto>> groupFuncionariosByFuncao() {
     List<Funcionario> allFuncionarios = funcionarioRepository.findAll();
-    return allFuncionarios.stream()
-        .collect(Collectors.groupingBy(Funcionario::getFuncao));
+    return allFuncionarios.stream().map(FuncionarioDto::fromEntity)
+        .collect(Collectors.groupingBy(FuncionarioDto::funcao));
   }
 
   /**
@@ -130,13 +126,5 @@ public class FuncionarioService {
         .map(Funcionario::getSalario)
         .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-  }
-
-  /**
-   * Retorna quantos salários mínimos um funcionário recebe.
-   */
-  public BigDecimal getSalariosMinimos(Funcionario funcionario) {
-    BigDecimal salarioMinimo = BigDecimal.valueOf(1212.00);
-    return funcionario.getSalario().divide(salarioMinimo, RoundingMode.HALF_DOWN);
   }
 }

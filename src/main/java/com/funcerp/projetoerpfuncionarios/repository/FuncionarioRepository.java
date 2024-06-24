@@ -1,6 +1,7 @@
 package com.funcerp.projetoerpfuncionarios.repository;
 
 import com.funcerp.projetoerpfuncionarios.entity.Funcionario;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +16,5 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
    *
    * @param nome Nome do funcionário.
    */
-  void deleteByNome(String nome);
+  Optional<Funcionario> findByNome(String nome);
 }

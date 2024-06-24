@@ -6,7 +6,9 @@ import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-
+/**
+ * Classe que representa um funcionário.
+ */
 public record FuncionarioDto(
     String nome,
     String dataNascimento,
@@ -15,6 +17,9 @@ public record FuncionarioDto(
 
 ) {
 
+  /**
+   * Método que cria um FuncionarioDto a partir de um Funcionario.
+   */
   public static FuncionarioDto fromEntity(Funcionario funcionario) {
     return new FuncionarioDto(
         funcionario.getNome(),
