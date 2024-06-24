@@ -10,4 +10,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
 
+  /**
+   * Deleta um funcionário por nome.
+   *
+   * @param nome Nome do funcionário.
+   */
+  void deleteByNome(String nome);
 }

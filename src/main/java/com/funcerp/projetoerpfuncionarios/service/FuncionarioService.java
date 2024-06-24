@@ -24,13 +24,30 @@ public class FuncionarioService {
     this.funcionarioRepository = funcionarioRepository;
   }
 
+  /**
+   * Salva funcionário.
+   */
   public Funcionario saveFuncionario(Funcionario funcionario) {
     return funcionarioRepository.save(funcionario);
   }
 
+  /**
+   * Deleta funcionário por id.
+   */
   public void deleteFuncionarioById(Long id) {
     funcionarioRepository.deleteById(id);
   }
+
+  /**
+   * Deleta um funcionário por nome.
+   */
+  public void deleteFuncionarioByNome(String nome) {
+    funcionarioRepository.deleteByNome(nome);
+  }
+
+  /**
+   * Retorna todos os funcionários.
+   */
 
   public List<Funcionario> findAll() {
     return funcionarioRepository.findAll();

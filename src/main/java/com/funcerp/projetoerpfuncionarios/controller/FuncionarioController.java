@@ -1,8 +1,9 @@
 package com.funcerp.projetoerpfuncionarios.controller;
 
-import com.funcerp.projetoerpfuncionarios.entity.Funcionario;
+import com.funcerp.projetoerpfuncionarios.controller.dto.FuncionarioDto;
 import com.funcerp.projetoerpfuncionarios.service.FuncionarioService;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,8 @@ public class FuncionarioController {
   }
 
   @GetMapping
-  public List<Funcionario> findAllFuncionarios() {
-    return funcionarioService.findAll();
+  public List<FuncionarioDto> findAllFuncionarios() {
+    return funcionarioService.findAll().stream()
+        .map(FuncionarioDto::fromEntity).collect(Collectors.toList());
   }
-
 }
