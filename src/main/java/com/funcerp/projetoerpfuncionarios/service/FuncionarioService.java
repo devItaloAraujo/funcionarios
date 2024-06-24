@@ -81,7 +81,7 @@ public class FuncionarioService {
   /**
    * Retorna lista de funcionários que fazem aniversário no(s) mês(es) fornecidos.
    */
-  public List<Funcionario> findFuncionariosByBirthdayMonth(int... months) {
+  public List<Funcionario> findFuncionariosByBirthdayMonth(List<Integer> months) {
     List<Funcionario> allFuncionarios = funcionarioRepository.findAll();
     return allFuncionarios.stream()
         .filter(funcionario -> {
