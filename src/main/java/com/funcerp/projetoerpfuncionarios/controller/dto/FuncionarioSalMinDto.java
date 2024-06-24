@@ -4,6 +4,9 @@ import com.funcerp.projetoerpfuncionarios.entity.Funcionario;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/**
+ * Classe que representa um DTO para funcionários com salários mínimos.
+ */
 public record FuncionarioSalMinDto(
     String nome,
     BigDecimal salarios
