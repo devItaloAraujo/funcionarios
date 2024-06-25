@@ -9,7 +9,7 @@ const defaultState = {
   buttonDisabled: true,
   labelText: '...',
   endOfUrl: '',
-  reponseData: '...',
+  responseData: '...',
   inputValue: '',
 };
 
@@ -19,9 +19,9 @@ function App() {
   const doGetRequest = async (endOfUrl) => {
     try {
       const response = await axios.get(URL+endOfUrl)
-      setState({ ...state, inputDisabled: true, buttonDisabled: true, reponseData: JSON.stringify(response.data), labelText: defaultState.labelText})
+      setState({ ...state, inputDisabled: true, buttonDisabled: true, responseData: response.data, labelText: defaultState.labelText, endOfUrl: endOfUrl})
     } catch (error) {
-      setState({ ...state, inputDisabled: true, buttonDisabled: true, reponseData: error.message, labelText: defaultState.labelText})
+      setState({ ...state, inputDisabled: true, buttonDisabled: true, responseData: error.message, labelText: defaultState.labelText, endOfUrl: endOfUrl})
     }
   }
 
@@ -66,25 +66,25 @@ function App() {
       case 'delete/':
         try {
           await axios.delete(URL+state.endOfUrl+state.inputValue)
-          setState({ ...state, isDisabled: true, reponseData: 'Funcionário excluído com sucesso!', endOfUrl: ''})
+          setState({ ...state, isDisabled: true, responseData: 'Funcionário excluído com sucesso!', endOfUrl: ''})
         } catch (error) {
-          setState({ ...state, isDisabled: true, reponseData: error.message, endOfUrl: '' })
+          setState({ ...state, isDisabled: true, responseData: error.message, endOfUrl: '' })
         }
         break;
       case 'aumenta-salario':
         try {
           await axios.patch(URL+state.endOfUrl)
-          setState({ ...state, isDisabled: true, reponseData: 'Salários aumentados com sucesso!', endOfUrl: ''})
+          setState({ ...state, isDisabled: true, responseData: 'Salários aumentados com sucesso!', endOfUrl: ''})
         } catch (error) {
-          setState({ ...state, isDisabled: true, reponseData: error.message, endOfUrl: '' })
+          setState({ ...state, isDisabled: true, responseData: error.message, endOfUrl: '' })
         }
         break;
       case 'aniversario/?months=':
         try {
           const response = await axios.get(URL+state.endOfUrl+state.inputValue)
-          setState({ ...state, inputDisabled: true, buttonDisabled: true, reponseData: JSON.stringify(response.data), labelText: 'Aniversariantes:', endOfUrl: ''})
+          setState({ ...state, inputDisabled: true, buttonDisabled: true, responseData: response.data, labelText: 'Aniversariantes:', endOfUrl: ''})
         } catch (error) {
-          setState({ ...state, inputDisabled: true, buttonDisabled: true, reponseData: error.message, labelText: defaultState.labelText, endOfUrl: ''})
+          setState({ ...state, inputDisabled: true, buttonDisabled: true, responseData: error.message, labelText: defaultState.labelText, endOfUrl: ''})
         }
         break;
       default:
@@ -133,7 +133,101 @@ function App() {
         <button disabled={state.buttonDisabled} onClick={handleConfirm}>Confirmar</button>
       </label>      
       <div className="exibicao">
-        {state.reponseData}    
+        {Array.isArray(state.responseData) 
+          && state.responseData.length > 0 
+          && state.endOfUrl !== 'mais-velho'
+          && state.endOfUrl !== 'salarios-min'
+          && (
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Data de Nascimento</th>
+                <th>Salário</th>
+                <th>Função</th>
+              </tr>
+            </thead>
+            <tbody>
+              {state.responseData.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.nome}</td>
+                  <td>{item.dataNascimento}</td>
+                  <td>{item.salario}</td>
+                  <td>{item.funcao}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        {typeof state.responseData == 'string' && (
+          <div>{state.responseData}</ div>  
+        )}
+        {typeof state.responseData !== 'string'
+         && state.endOfUrl === 'mais-velho' && (
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Idade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{state.responseData.nome}</td>
+                <td>{state.responseData.idade}</td>
+              </tr>
+            </tbody>
+          </table>
+        )}
+        {Array.isArray(state.responseData) 
+          && state.responseData.length > 0 
+          && state.endOfUrl == 'salarios-min'
+          && (
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Salários Mínimos</th>
+              </tr>
+            </thead>
+            <tbody>
+              {state.responseData.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.nome}</td>
+                  <td>{item.salarios}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        { typeof state.responseData !== 'string'
+          && state.endOfUrl === 'funcoes' && (
+            Object.entries(state.responseData).map(([role, people]) => (
+              <div key={role}>
+                <h3>{role}</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>Data de Nascimento</th>
+                      <th>Salário</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {people.map((person, index) => (
+                      <tr key={index}>
+                        <td>{person.nome}</td>
+                        <td>{person.dataNascimento}</td>
+                        <td>{person.salario}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ))  
+          )
+
+        }
       </div>
     </>
   )
