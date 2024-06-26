@@ -74,6 +74,8 @@ public class FuncionariosERPIntegrationTest {
 
     assertEquals(BigDecimal.valueOf(2210.38), funcionarios.get(0).getSalario(),
         "Salário de Maria deveria ter sido aumentado em 10%");
+
+    funcionarioService.decreaseSalarioByTenPercent();
   }
 
   @Test
@@ -129,7 +131,7 @@ public class FuncionariosERPIntegrationTest {
     mockMvc.perform(get("/total"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isNotEmpty())
-        .andExpect(jsonPath("$").value("53.419,64"));
+        .andExpect(jsonPath("$").value("48.563,31"));
   }
 
   @Test
@@ -141,6 +143,6 @@ public class FuncionariosERPIntegrationTest {
         .andExpect(jsonPath("$").isNotEmpty())
         .andExpect(jsonPath("$", hasSize(10)))
         .andExpect(jsonPath("$[0].nome").value("Maria"))
-        .andExpect(jsonPath("$[0].salarios").value("1.82"));
+        .andExpect(jsonPath("$[0].salarios").value("1.66"));
   }
 }

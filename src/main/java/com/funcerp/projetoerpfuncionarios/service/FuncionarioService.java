@@ -4,6 +4,7 @@ import com.funcerp.projetoerpfuncionarios.controller.dto.FuncionarioDto;
 import com.funcerp.projetoerpfuncionarios.entity.Funcionario;
 import com.funcerp.projetoerpfuncionarios.repository.FuncionarioRepository;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,22 @@ public class FuncionarioService {
       BigDecimal currentSalario = funcionario.getSalario();
       BigDecimal increasedSalario = currentSalario.multiply(BigDecimal.valueOf(1.10));
       funcionario.setSalario(increasedSalario);
+    });
+
+    funcionarioRepository.saveAll(allFuncionarios);
+  }
+
+  /**
+   * Desfaz o aumento de salário de todos os funcionários.
+   */
+  public void decreaseSalarioByTenPercent() {
+    List<Funcionario> allFuncionarios = funcionarioRepository.findAll();
+
+    allFuncionarios.forEach(funcionario -> {
+      BigDecimal currentSalario = funcionario.getSalario();
+      BigDecimal decreasedSalario = currentSalario.divide(BigDecimal.valueOf(1.10),
+          RoundingMode.HALF_UP);
+      funcionario.setSalario(decreasedSalario);
     });
 
     funcionarioRepository.saveAll(allFuncionarios);
