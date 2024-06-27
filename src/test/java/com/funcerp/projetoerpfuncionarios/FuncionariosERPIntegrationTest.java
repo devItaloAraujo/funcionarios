@@ -131,7 +131,7 @@ public class FuncionariosERPIntegrationTest {
     mockMvc.perform(get("/total"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isNotEmpty())
-        .andExpect(jsonPath("$").value("48.563,31"));
+        .andExpect(jsonPath("$").value("R$ 48.563,31"));
   }
 
   @Test

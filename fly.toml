@@ -1,0 +1,21 @@
+# fly.toml app configuration file generated for italo-erp-funcionarios on 2024-06-27T16:37:34-03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'italo-erp-funcionarios'
+primary_region = 'gru'
+swap_size_mb = 512
+
+[build]
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  size = 'shared-cpu-1x'
