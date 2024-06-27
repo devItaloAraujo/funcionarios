@@ -24,7 +24,7 @@ public record FuncionarioDto(
     return new FuncionarioDto(
         funcionario.getNome(),
         funcionario.getDataNascimento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-        NumberFormat.getInstance(new Locale("pt", "BR")).format(funcionario.getSalario()),
+        "R$ " + NumberFormat.getInstance(new Locale("pt", "BR")).format(funcionario.getSalario()),
         funcionario.getFuncao()
     );
   }

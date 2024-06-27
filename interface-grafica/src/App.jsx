@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import axios from 'axios'
+import { motion } from 'framer-motion'
 
 const URL = 'http://localhost:8080/';
 
@@ -100,33 +101,60 @@ function App() {
     <>
       <h1>ERP Funcionários</h1>
       <div className="card">
-        <button onClick={handleVerTodosClick}>
+        <motion.button          
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2 }}
+          onClick={handleVerTodosClick}>
           Ver todos
-        </button>
-        <button onClick={handleDeleteClick}>
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2 }} 
+          onClick={handleDeleteClick}>
           Deletar
-        </button>
-        <button onClick={handleAumentarSalarioClick}>
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2 }} 
+          onClick={handleAumentarSalarioClick}>
           Aumentar salário(10%)
-        </button>
-        <button onClick={handleAgruparPorFuncaoClick}>
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2 }} 
+          onClick={handleAgruparPorFuncaoClick}>
           Agrupar por função
-        </button>
-        <button onClick={handleAniversariosClick}>
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2 }} 
+          onClick={handleAniversariosClick}>
           Aniversários
-        </button>
-        <button onClick={handleMaisVelhoClick}>
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2 }} 
+          onClick={handleMaisVelhoClick}>
           Mostrar mais velho
-        </button>
-        <button onClick={handleOrdemAlfabeticaClick}>
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2 }} 
+          onClick={handleOrdemAlfabeticaClick}>
           Ver todos em ordem alfabética
-        </button>
-        <button onClick={handleTotalSalariosClick}>
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2 }} 
+          onClick={handleTotalSalariosClick}>
           Total dos salários
-        </button>
-        <button onClick={handleSalariosMinimosClick}>
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2 }} 
+          onClick={handleSalariosMinimosClick}>
           Salários Mínimos
-        </button>
+        </motion.button>
       </div>
       <label htmlFor="myInput">{state.labelText}
         <input id="myInput" type="text" disabled={state.inputDisabled} onChange={handleInputChange}/>
@@ -203,8 +231,10 @@ function App() {
         { typeof state.responseData !== 'string'
           && state.endOfUrl === 'funcoes' && (
             Object.entries(state.responseData).map(([role, people]) => (
-              <div key={role}>
-                <h3>{role}</h3>
+              <div
+                className='div-funcao' 
+                key={role}>
+                <h2>{role}</h2>
                 <table>
                   <thead>
                     <tr>
@@ -226,7 +256,6 @@ function App() {
               </div>
             ))  
           )
-
         }
       </div>
     </>

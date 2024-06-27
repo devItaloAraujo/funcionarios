@@ -72,7 +72,7 @@ public class FuncionarioController {
 
   @GetMapping("/total")
   public String getTotalSalario() {
-    return NumberFormat.getInstance(new Locale("pt", "BR"))
+    return "R$ " + NumberFormat.getInstance(new Locale("pt", "BR"))
         .format(funcionarioService.getTotalSalarios());
   }
 
