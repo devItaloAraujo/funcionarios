@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import axios from 'axios'
 import { motion } from 'framer-motion'
+import Loader from './components/Loader';
+import MotionButton from './components/MotionButton';
 
 const URL = 'https://italo-erp-funcionarios.fly.dev/';
 
@@ -26,15 +28,20 @@ function App() {
     }
   }
 
-  const handleDeleteClick = async () => {        
+    useEffect(() => {
+      doGetRequest('')
+    }
+  , [])
+
+  const handleDeleteClick = () => {        
     setState({ ...state, inputDisabled: false, buttonDisabled: false, labelText: 'Informe o nome do funcionário a ser excluído e confirme:', endOfUrl: 'delete/' })
   }
 
-  const handleAumentarSalarioClick = async () => {
+  const handleAumentarSalarioClick = () => {
     setState({ ...state, inputDisabled: true, buttonDisabled: false, labelText: 'Confirme aumento de salário:', endOfUrl: 'aumenta-salario' })
   }
 
-  const handleAniversariosClick = async () => {
+  const handleAniversariosClick = () => {
     setState({ ...state, inputDisabled: false, buttonDisabled: false, labelText: 'Insira os meses (números, separados por vírgula) e confirme:', endOfUrl: 'aniversario/?months=' })
   }
 
@@ -101,60 +108,51 @@ function App() {
     <>
       <h1>ERP Funcionários</h1>
       <div className="card">
-        <motion.button          
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.2 }}
-          onClick={handleVerTodosClick}>
-          Ver todos
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.2 }} 
-          onClick={handleDeleteClick}>
-          Deletar
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.2 }} 
-          onClick={handleAumentarSalarioClick}>
-          Aumentar salário(10%)
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.2 }} 
-          onClick={handleAgruparPorFuncaoClick}>
-          Agrupar por função
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.2 }} 
-          onClick={handleAniversariosClick}>
-          Aniversários
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.2 }} 
-          onClick={handleMaisVelhoClick}>
-          Mostrar mais velho
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.2 }} 
-          onClick={handleOrdemAlfabeticaClick}>
-          Ver todos em ordem alfabética
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.2 }} 
-          onClick={handleTotalSalariosClick}>
-          Total dos salários
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.2 }} 
-          onClick={handleSalariosMinimosClick}>
-          Salários Mínimos
-        </motion.button>
+          <MotionButton
+            onClick={handleVerTodosClick}
+            color="#3535f1">
+            Ver todos
+          </MotionButton>
+          <MotionButton
+            onClick={handleAgruparPorFuncaoClick}
+            color="#3535f1">
+            Agrupar por função
+          </MotionButton>
+          <MotionButton
+            onClick={handleMaisVelhoClick}
+            color="#3535f1">
+            Mostrar mais velho
+          </MotionButton>
+          <MotionButton
+            onClick={handleOrdemAlfabeticaClick}
+            color="#3535f1">
+            Ver todos em ordem alfabética
+          </MotionButton>
+          <MotionButton
+            onClick={handleTotalSalariosClick}
+            color="#3535f1">
+            Total dos salários
+          </MotionButton>
+          <MotionButton
+            onClick={handleSalariosMinimosClick}
+            color="#3535f1">
+            Salários Mínimos
+          </MotionButton>
+          <MotionButton
+            onClick={handleAumentarSalarioClick}
+            color="#277c1c">
+            Aumentar salário(10%)
+          </MotionButton>
+          <MotionButton
+            onClick={handleAniversariosClick}
+            color="#277c1c">
+            Aniversários
+          </MotionButton>
+          <MotionButton
+            onClick={handleDeleteClick}
+            color="red">
+            Deletar
+          </MotionButton>
       </div>
       <label htmlFor="myInput">{state.labelText}
         <input id="myInput" type="text" disabled={state.inputDisabled} onChange={handleInputChange}/>
@@ -163,8 +161,8 @@ function App() {
       <div className="exibicao">
         {Array.isArray(state.responseData) 
           && state.responseData.length > 0 
-          && state.endOfUrl !== 'mais-velho'
-          && state.endOfUrl !== 'salarios-min'
+          && (state.endOfUrl == 'ordenada'
+          || state.endOfUrl == '')
           && (
           <table>
             <thead>
@@ -187,8 +185,13 @@ function App() {
             </tbody>
           </table>
         )}
-        {typeof state.responseData == 'string' && (
+        {typeof state.responseData == 'string' 
+        && state.responseData !== '...' && (
           <div>{state.responseData}</ div>  
+        )}
+        {typeof state.responseData == 'string' 
+        && state.responseData == '...' && (
+            <><Loader /><p>Carregando...</p></>
         )}
         {typeof state.responseData !== 'string'
          && state.endOfUrl === 'mais-velho' && (
