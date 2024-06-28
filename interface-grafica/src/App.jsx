@@ -3,7 +3,7 @@ import './App.css'
 import axios from 'axios'
 import { motion } from 'framer-motion'
 
-const URL = 'http://localhost:8080/';
+const URL = 'https://italo-erp-funcionarios.fly.dev/';
 
 const defaultState = {
   inputDisabled: true,

@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
-        .allowedOriginPatterns("http://localhost:*")
+        .allowedOriginPatterns("http://localhost:*", "https://italo-funcerp.fly.dev")
         .allowedMethods("GET", "POST", "PATCH", "DELETE")
         .allowedHeaders("*")
         .allowCredentials(true);
