@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import axios from 'axios'
-import { motion } from 'framer-motion'
 import Loader from './components/Loader';
 import MotionButton from './components/MotionButton';
 
-const URL = 'https://italo-erp-funcionarios.fly.dev/';
+// const URL = 'https://italo-erp-funcionarios.fly.dev/';
+const URL = 'http://localhost:8080/';
 
 const defaultState = {
   inputDisabled: true,

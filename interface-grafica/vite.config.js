@@ -7,6 +7,6 @@ export default defineConfig({
   server: {
     host: '0.0.0.0', // Listen on all network interfaces
     strictPort: true,
-    port: parseInt(process.env.PORT, 10) || 8080, // Use the PORT environment variable if it's available
+    port: parseInt(process.env.PORT, 10) || 8081, // Use the PORT environment variable if it's available
   }
 })
